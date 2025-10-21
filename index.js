@@ -241,14 +241,13 @@ app.event('message', async ({ event, client, say }) => {
 });
 
 // Handle app mentions (@Kat)
-app.event('app_mention', async ({ event, client, say }) => {
+app.event('app_mention', async ({ event, say }) => {
   // Remove the mention from the text
   const text = event.text.replace(/<@[A-Z0-9]+>/g, '').trim();
   
-  // Treat as a regular message
-  await app.client.chat.postMessage({
-    channel: event.channel,
-    text: text,
+  // For now, just acknowledge it
+  await say({
+    text: "Hey! I got your mention. Let me help with that!",
     thread_ts: event.ts
   });
 });
