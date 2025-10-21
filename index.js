@@ -21,6 +21,8 @@ const pendingOnboarding = {}; // Track users waiting to provide domain
 // Helper: Find customer by domain in Linear
 async function findCustomerByDomain(domain) {
   try {
+    console.log(`🔍 Searching for domain: ${domain}`);
+    
     // Use GraphQL to query customers with their domains
     const query = `
       query GetCustomers {
@@ -35,7 +37,15 @@ async function findCustomerByDomain(domain) {
     `;
     
     const response = await linearClient.client.rawRequest(query);
+    console.log('📦 Raw response:', JSON.stringify(response, null, 2));
+    
     const customers = response.data.customers.nodes;
+    console.log(`📋 Found ${customers.length} customers total`);
+    
+    // Log each customer's domains
+    customers.forEach(customer => {
+      console.log(`  - ${customer.name}: domains = ${JSON.stringify(customer.domains)}`);
+    });
     
     // Search through customers for matching domain
     for (const customer of customers) {
@@ -45,6 +55,7 @@ async function findCustomerByDomain(domain) {
           d.toLowerCase() === domain.toLowerCase()
         );
         if (matchedDomain) {
+          console.log(`✅ Match found: ${customer.name} (${matchedDomain})`);
           return {
             id: customer.id,
             name: customer.name,
@@ -53,6 +64,7 @@ async function findCustomerByDomain(domain) {
         }
       }
     }
+    console.log('❌ No matching domain found');
     return null;
   } catch (error) {
     console.error('Error finding customer:', error);
