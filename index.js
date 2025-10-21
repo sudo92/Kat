@@ -1,3 +1,4 @@
+require('dotenv').config();
 // Kat - Your friendly neighborhood support bot 🐱
 // Built with Slack Bolt.js + Linear API
 
