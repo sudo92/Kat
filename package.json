@@ -1,0 +1,21 @@
+{
+  "name": "kat-bot",
+  "version": "1.0.0",
+  "description": "Kat - Customer support Slack bot that vibes with Linear",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.17.1",
+    "@linear/sdk": "^27.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
