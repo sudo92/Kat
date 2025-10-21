@@ -21,11 +21,24 @@ const pendingOnboarding = {}; // Track users waiting to provide domain
 // Helper: Find customer by domain in Linear
 async function findCustomerByDomain(domain) {
   try {
-    const customers = await linearClient.customers();
-    const allCustomers = await customers.nodes;
+    // Use GraphQL to query customers with their domains
+    const query = `
+      query GetCustomers {
+        customers {
+          nodes {
+            id
+            name
+            domains
+          }
+        }
+      }
+    `;
+    
+    const response = await linearClient.client.rawRequest(query);
+    const customers = response.data.customers.nodes;
     
     // Search through customers for matching domain
-    for (const customer of allCustomers) {
+    for (const customer of customers) {
       if (customer.domains && customer.domains.length > 0) {
         // Check if any domain matches
         const matchedDomain = customer.domains.find(d => 
