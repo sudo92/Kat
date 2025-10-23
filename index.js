@@ -50,9 +50,15 @@ async function findCustomerByDomain(domain) {
     // Search through customers for matching domain
     for (const customer of customers) {
       if (customer.domains && customer.domains.length > 0) {
+        console.log(`  🔎 Checking ${customer.name}:`);
+        customer.domains.forEach(d => {
+          console.log(`     Comparing "${d}" (length: ${d.length}) with "${domain}" (length: ${domain.length})`);
+          console.log(`     Lowercase: "${d.toLowerCase()}" === "${domain.toLowerCase()}" = ${d.toLowerCase() === domain.toLowerCase()}`);
+        });
+        
         // Check if any domain matches
         const matchedDomain = customer.domains.find(d => 
-          d.toLowerCase() === domain.toLowerCase()
+          d.toLowerCase().trim() === domain.toLowerCase().trim()
         );
         if (matchedDomain) {
           console.log(`✅ Match found: ${customer.name} (${matchedDomain})`);
